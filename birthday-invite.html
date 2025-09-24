@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>You're Invited! 🎉</title>
+  <style>
+    :root{
+      --bg:#fff8f3;
+      --card:#ffffff;
+      --accent:#ff6b6b;
+      --muted:#6b6b6b;
+      --shadow: 0 8px 24px rgba(0,0,0,0.07);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255,107,107,0.06), transparent 6%),
+        linear-gradient(180deg,#fffaf6 0%, #fff8f3 100%);
+      color:#222;
+      padding:24px;
+    }
+    .card{
+      width:100%;
+      max-width:760px;
+      background:var(--card);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      padding:28px;
+      box-sizing:border-box;
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+    .header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .balloon{
+      width:84px;
+      height:84px;
+      background:linear-gradient(180deg,var(--accent),#ff9a9a);
+      border-radius:48% 48% 50% 50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      font-size:26px;
+      box-shadow: 0 6px 18px rgba(255,107,107,0.14);
+    }
+    h1{
+      margin:0;
+      font-size:28px;
+      letter-spacing:0.2px;
+    }
+    p.lead{
+      margin:8px 0 18px 0;
+      color:var(--muted);
+    }
+
+    .details{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px 24px;
+      margin-top:8px;
+    }
+    .detail{
+      background:#fffaf7;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,0.02);
+    }
+    .detail strong{display:block; margin-bottom:6px; color:#333}
+    .controls{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+      align-items:center;
+    }
+    .btn{
+      padding:10px 16px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .btn-primary{
+      background:var(--accent);
+      color:white;
+    }
+    .btn-outline{
+      background:transparent;
+      border:1px solid rgba(0,0,0,0.06);
+      color:#333;
+    }
+    .footer{
+      margin-top:18px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* responsive */
+    @media (max-width:600px){
+      .details{ grid-template-columns: 1fr; }
+      .balloon{ width:64px; height:64px; font-size:20px; }
+      h1{ font-size:22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <div class="header">
+      <div class="balloon">🎈</div>
+      <div>
+        <h1>You're invited to Priya's Birthday Bash!</h1>
+        <p class="lead">Join us for cake, music and fun — bring your smiles. 🥳</p>
+      </div>
+    </div>
+
+    <div class="details" aria-label="Event details">
+      <div class="detail">
+        <strong>When</strong>
+        Sat, 5 Oct 2025<br>
+        5:00 PM - 8:00 PM
+      </div>
+      <div class="detail">
+        <strong>Where</strong>
+        Sweet Garden Café<br>
+        24 Rose Avenue, Pune
+      </div>
+
+      <div class="detail">
+        <strong>Dress Code</strong>
+        Casual / Bright colors
+      </div>
+      <div class="detail">
+        <strong>Hosted by</strong>
+        Priya & Friends
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-primary" id="rsvpBtn" aria-label="RSVP">RSVP — Count me in!</button>
+      <button class="btn btn-outline" id="printBtn">Print / Save</button>
+      <a class="btn" href="mailto:host@example.com?subject=RSVP%20for%20Priya%20Birthday" style="text-decoration:none; color:inherit; background:#f8f9fb; border-radius:10px; padding:10px 14px; border:1px solid rgba(0,0,0,0.04);">Message Host</a>
+    </div>
+
+    <div class="footer">
+      <strong>Note:</strong> Please RSVP by 28 Sep. If you have dietary restrictions, let us know in the RSVP message.
+    </div>
+
+    <!-- hidden RSVP form (simple JS demo) -->
+    <template id="rsvpForm">
+      <div style="margin-top:14px;">
+        <label style="display:block;margin-bottom:8px;font-weight:600">Your name</label>
+        <input id="rsvpName" type="text" placeholder="e.g. Asha" style="padding:10px;border-radius:8px;border:1px solid #eee;width:100%;box-sizing:border-box"/>
+        <label style="display:block;margin-top:8px;font-weight:600">Message (optional)</label>
+        <textarea id="rsvpMessage" rows="3" placeholder="Any notes (allergies...)" style="padding:10px;border-radius:8px;border:1px solid #eee;width:100%;box-sizing:border-box"></textarea>
+        <div style="margin-top:8px;display:flex;gap:8px;">
+          <button id="sendRsvp" class="btn btn-primary">Send RSVP</button>
+          <button id="cancelRsvp" class="btn btn-outline">Cancel</button>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <script>
+    const rsvpBtn = document.getElementById('rsvpBtn');
+    const printBtn = document.getElementById('printBtn');
+    const card = document.querySelector('.card');
+
+    rsvpBtn.addEventListener('click', () => {
+      // show a simple inline RSVP form
+      if (document.getElementById('rsvpName')) return; // already open
+      const tpl = document.getElementById('rsvpForm').content.cloneNode(true);
+      card.appendChild(tpl);
+
+      document.getElementById('cancelRsvp').addEventListener('click', () => {
+        document.getElementById('rsvpName').closest('div').remove();
+      });
+
+      document.getElementById('sendRsvp').addEventListener('click', () => {
+        const name = document.getElementById('rsvpName').value.trim() || 'Guest';
+        const msg  = document.getElementById('rsvpMessage').value.trim();
+        // demo: show confirmation and copy a simple message to clipboard
+        alert(`Thank you, ${name}! Your RSVP has been recorded.\n(For demo, message copied to clipboard.)`);
+        const text = `RSVP: ${name}\nMessage: ${msg}\nEvent: Priya's Birthday`;
+        navigator.clipboard && navigator.clipboard.writeText(text);
+        document.getElementById('rsvpName').closest('div').remove();
+      });
+    });
+
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  </script>
+</body>
+</html>
